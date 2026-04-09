@@ -3,43 +3,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
 body{
   margin:0;
-  font-family:-apple-system, BlinkMacSystemFont;
+  font-family:-apple-system,BlinkMacSystemFont;
   background:linear-gradient(135deg,#0f0018,#ff6a00);
   color:white;
   display:flex;
   flex-direction:column;
   height:100vh;
-  overflow:hidden;
 }
 
 /* GRID */
 #grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:14px;
-  padding:14px;
+  gap:12px;
+  padding:12px;
 }
 
 /* FLOAT ANIMATION */
 @keyframes float{
   0%{transform:translateY(0);}
-  50%{transform:translateY(-8px);}
+  50%{transform:translateY(-6px);}
   100%{transform:translateY(0);}
 }
 
-/* ICON STYLE */
+/* ICON */
 .grid-btn{
-  height:72px;
+  height:70px;
   border-radius:50%;
   display:flex;
   flex-direction:column;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(12px);
-  box-shadow:0 6px 20px rgba(0,0,0,0.6);
-  font-size:20px;
-  animation:float 3s ease-in-out infinite;
+  backdrop-filter:blur(10px);
+  animation:float 3s infinite;
 }
 
 .grid-btn span{
@@ -50,13 +47,13 @@ body{
 #chat{
   flex:1;
   overflow:auto;
-  padding:12px;
+  padding:10px;
 }
 
 .msg{
-  margin:10px;
-  padding:14px;
-  border-radius:16px;
+  margin:8px;
+  padding:12px;
+  border-radius:14px;
   max-width:85%;
 }
 
@@ -84,16 +81,16 @@ img,video{
 
 #bottom input{
   flex:1;
-  padding:14px;
+  padding:12px;
   border:none;
-  border-radius:14px;
+  border-radius:12px;
 }
 
 #bottom button{
-  margin-left:6px;
-  padding:14px;
+  margin-left:5px;
+  padding:12px;
   border:none;
-  border-radius:14px;
+  border-radius:12px;
   background:#ff6a00;
   color:white;
 }
@@ -127,7 +124,7 @@ function add(text,type){
 // MODE
 function setMode(m){
   mode=m;
-  add("Mode: "+m,"ai");
+  add("✨ Mode: <b>"+m.toUpperCase()+"</b>","ai");
 }
 
 // TEMPLATE
@@ -145,7 +142,7 @@ function template(type){
     mode="story";
   }
   if(type==="money"){
-    input.value="How to make money online";
+    input.value="How to make money online step by step";
     mode="chat";
   }
   send();
@@ -154,19 +151,17 @@ function template(type){
 // TIKTOK
 function toggleTikTok(){
   tiktok=!tiktok;
-  add("TikTok Mode: "+(tiktok?"ON 🔥":"OFF"),"ai");
+  add("🚀 TikTok Mode: "+(tiktok?"ON 🔥":"OFF"),"ai");
 }
 
 // VOICE INPUT
 function voice(){
   let rec=new (window.SpeechRecognition||window.webkitSpeechRecognition)();
   rec.lang="en-US";
-
   rec.onresult=e=>{
     input.value=e.results[0][0].transcript;
     send();
   };
-
   rec.start();
 }
 
@@ -185,32 +180,34 @@ function download(url,name){
   a.click();
 }
 
-// LONG STORY (FIXED)
+// LONG STORY
 function storyGen(topic){
   return `
-📖 STORY
+📖 CINEMATIC STORY
 
-In a world where ${topic}, everything started to change.
+In a world where ${topic}, everything began to shift.
 
-At first, nobody noticed anything unusual. Life continued as normal.
+At first, it seemed normal. But slowly, hidden patterns started emerging.
 
-But slowly, strange events began happening. People started questioning reality.
+Strange events unfolded. People questioned reality.
 
-Fear spread, confusion grew, and everything became uncertain.
+Fear grew. Doubt spread.
 
-Then came the turning point.
+But one person refused to give up.
 
-One bold decision changed everything.
+Through struggle, pain, and determination, a new path was forged.
 
-Through struggle, pain, and determination, a new path was created.
+🔥 Then came the turning point.
 
-Strength replaced fear.
+A bold decision changed everything.
 
-Vision replaced doubt.
+Limits were broken.
 
-And in the end…
+Power awakened.
 
-✨ A new beginning was born.
+Destiny was rewritten.
+
+✨ And this… was only the beginning.
 `;
 }
 
@@ -224,19 +221,36 @@ function send(){
   // IMAGE
   if(mode==="image"){
     let url="https://image.pollinations.ai/prompt/"+encodeURIComponent(txt);
-    add(`<img src="${url}"><button onclick="download('${url}','image.jpg')">⬇ Download</button>`,"ai");
+    add(`<img src="${url}">
+    <button onclick="download('${url}','image.jpg')">⬇ Download</button>`,"ai");
     speak("Image ready");
     return;
   }
 
-  // VIDEO
+  // VIDEO (FIXED)
   if(mode==="video"){
     let vid="https://samplelib.com/lib/preview/mp4/sample-5s.mp4";
-    add(`<video controls src="${vid}"></video>
-    🎬 ${txt}
-    🔥 Viral caption: "${txt} 😳"
-    <button onclick="download('${vid}','video.mp4')">⬇ Download</button>`,"ai");
-    speak("Video ready");
+
+    add(`
+    🎬 <b>AI Video Preview</b>
+
+    <video controls src="${vid}"></video>
+
+    🧠 <b>Concept:</b><br>
+    A cinematic visual of <b>${txt}</b> designed for viral content.
+
+    🔥 <b>Caption:</b><br>
+    "${txt} 😳🔥"
+
+    🎵 <b>Sound:</b><br>
+    Trending TikTok / Reels audio
+
+    ⚠️ <i>Real AI video generation coming soon</i>
+
+    <button onclick="download('${vid}','video.mp4')">⬇ Download</button>
+    `,"ai");
+
+    speak("Video preview ready");
     return;
   }
 
@@ -247,12 +261,12 @@ function send(){
       s+="\n🔥 This will go viral #fyp";
     }
     add(s,"ai");
-    speak("Story ready");
+    speak("Story generated");
     return;
   }
 
   // CHAT
-  let reply="🤖 "+txt+" — Think bigger, act smarter, stay consistent.";
+  let reply="🤖 "+txt+" — Think bigger, move smarter, stay consistent.";
   add(reply,"ai");
   speak(reply);
 }
